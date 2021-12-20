@@ -17,7 +17,7 @@ const items = [
 export default function App() {
   const [filteredItems, setFilteredItems] = useState([]);
   const [isOptionsModalOpened, setIsOptionsModalOpened] = useState(false);
-  const [currentSearchedValue, setCurrentSearchedValue] = useState(null);
+  const [currentSearchedValue, setCurrentSearchedValue] = useState("");
   const [submittedValue, setSubmittedValue] = useState(null);
   const [loadingResults, setLoadingResults] = useState(false);
 

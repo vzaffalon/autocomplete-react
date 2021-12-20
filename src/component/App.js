@@ -21,7 +21,7 @@ export default class App extends React.Component {
     this.state = {
       filteredItems: [],
       isOptionsModalOpened: false,
-      currentSearchedValue: null,
+      currentSearchedValue: "",
       submittedValue: null,
       loadingResults: false,
     };
