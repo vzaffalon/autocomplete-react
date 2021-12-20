@@ -1,4 +1,4 @@
-import "./App.css";
+import "../App.css";
 import React from "react";
 import OptionsList from "./OptionsList";
 import SubmissionContent from "./SubmissionContent";
@@ -35,9 +35,11 @@ export default class App extends React.Component {
   };
 
   submitSearch = () => {
-    this.setState({
-      submittedValue: this.state.currentSearchedValue,
-      isOptionsModalOpened: false,
+    this.setState((state) => {
+      return {
+        submittedValue: state.currentSearchedValue,
+        isOptionsModalOpened: false,
+      };
     });
   };
 
