@@ -1,5 +1,7 @@
 import "./App.css";
 import React from "react";
+import OptionsList from "./OptionsList";
+import SubmissionContent from "./SubmissionContent";
 
 const items = [
   { id: 1, name: "banana" },
@@ -9,7 +11,7 @@ const items = [
   { id: 5, name: "Alfalfa" },
   { id: 6, name: "2 apples" },
   { id: 7, name: "fun fruit" },
-  { id: 8, name: "dragon fruit" }
+  { id: 8, name: "dragon fruit" },
 ];
 
 export default class App extends React.Component {
@@ -21,28 +23,27 @@ export default class App extends React.Component {
       isOptionsModalOpened: false,
       currentSearchedValue: null,
       submittedValue: null,
-      loadingResults: false
+      loadingResults: false,
     };
   }
 
   setSelectedSearchItem = (selectedValue) => {
     this.setState({
       currentSearchedValue: selectedValue,
-      isOptionsModalOpened: false
+      isOptionsModalOpened: false,
     });
   };
 
   submitSearch = () => {
     this.setState({
       submittedValue: this.state.currentSearchedValue,
-      isOptionsModalOpened: false
+      isOptionsModalOpened: false,
     });
   };
 
   getLisOfItems = async (searchedValue) => {
     return new Promise((resolve) =>
       setTimeout(() => {
-        console.log({ searchedValue });
         const filteredItems = items.filter((item) =>
           item.name.toLowerCase().startsWith(searchedValue.toLowerCase())
         );
@@ -52,13 +53,9 @@ export default class App extends React.Component {
   };
 
   updateListOfItems = async (e) => {
-    this.setState({
-      submittedValue: null
-    });
-
     const searchedValue = e.target.value;
     this.setState({
-      currentSearchedValue: searchedValue
+      currentSearchedValue: searchedValue,
     });
 
     if (searchedValue.length === 0) {
@@ -66,21 +63,22 @@ export default class App extends React.Component {
     }
 
     this.setState({
-      loadingResults: true
+      loadingResults: true,
     });
+
     const filteredItems = await this.getLisOfItems(searchedValue);
+
     this.setState({
-      loadingResults: false
+      loadingResults: false,
     });
 
     this.setState({
       filteredItems,
-      isOptionsModalOpened: true
+      isOptionsModalOpened: true,
     });
   };
 
   render() {
-    console.log("filteredItems", this.state.filteredItems);
     return (
       <div className="App">
         <div id="background" className="background">
@@ -105,37 +103,13 @@ export default class App extends React.Component {
               {this.state.isOptionsModalOpened &&
                 this.state.currentSearchedValue &&
                 this.state.currentSearchedValue.length > 0 && (
-                  <div id="options" className="options">
-                    {!this.state.loadingResults ? (
-                      <div id="options-list" className="options-list">
-                        {this.state.filteredItems.length > 0 ? (
-                          this.state.filteredItems.map((item) => (
-                            <li
-                              id={item.id}
-                              onClick={() =>
-                                this.setSelectedSearchItem(item.name)
-                              }
-                              className="options-item"
-                            >
-                              <p className="option-text">{item.name}</p>
-                            </li>
-                          ))
-                        ) : (
-                          <li id="1" className="options-no-item">
-                            <p className="option-text">No options found.</p>
-                          </li>
-                        )}
-                      </div>
-                    ) : (
-                      <li id="1" className="options-no-item">
-                        <p className="option-text">Loading results...</p>
-                      </li>
-                    )}
-                  </div>
+                  <OptionsList
+                    setSelectedSearchItem={this.setSelectedSearchItem}
+                    loadingResults={this.state.loadingResults}
+                    listOfItems={this.state.filteredItems}
+                  />
                 )}
-              {this.state.submittedValue && (
-                <h2>Submitted value is {this.state.submittedValue}</h2>
-              )}
+              <SubmissionContent submittedValue={this.state.submittedValue} />
             </div>
           </div>
         </div>
